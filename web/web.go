@@ -425,7 +425,12 @@ func tmplFuncs(consolesPath string, opts *Options) template_text.FuncMap {
 		},
 		"consolesPath": func() string { return consolesPath },
 		"pathPrefix":   func() string { return opts.ExternalURL.Path },
-		"buildVersion": func() string { return opts.Version.Revision[:7] },
+		"buildVersion": func() string {
+			if len(opts.Version.Revision) < 7 {
+				return opts.Version.Revision
+			}
+			return opts.Version.Revision[:7]
+		},
 		"stripLabels": func(lset model.LabelSet, labels ...model.LabelName) model.LabelSet {
 			for _, ln := range labels {
 				delete(lset, ln)
